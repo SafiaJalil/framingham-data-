@@ -1,0 +1,110 @@
+---
+title: "DM A1"
+author: "Safia Bint-e Jalil"
+date: '2022-10-30'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+library(readr)
+fram.df <- read_csv("framingham.csv")
+#dimension of the dataset
+dim(fram.df)
+head(fram.df, 25)
+#centeral tendency and type of varaiables
+summary(fram.df)
+lapply(fram.df,typeof)
+```
+```{r}
+#structure os the dataset 
+names(fram.df)
+str(fram.df)
+```
+##Types of varaiable, Numerical and Catogorical.
+##Catogorical can be binary i.e yes or no which is indicated with 0 and 1 and called as nominal where is for ordinal there is order in the data.
+
+## For the above dataet, there are numerical,catogorical and binary variables which looks like numerical but actually binary and catogorical in nature. In catogorical the bionary varaiables are nominal and "education" is ordinal variable. 
+#Centeral tendency measure for Numerical : Mean,median and standard deviation.
+#Centeral tendency for Categorical : Count,mode, frequency and growth(in terms of shares and stock).
+##For ID, it is numerical varaiable.We know that ID is unique value for every observation and there is no purpose of calculating mean or median for this.So there will be no measure of centeral tendency for this varaiable.
+##Male,it is binary - nominal catogorical varaiable, Centeral tendency measure we use count,frequency,and mode.
+##Age, numerical varaiable, Mean, median and standard deviation is used to measure central tendency.
+##education,ordinal catogorical varaiable. It shows order from highschool 1 to college 4. the central tendency to measure is count, frequency and mode.
+##cigsperday, numerical varaiable, Mean, median and standard deviation is used to measure central tendency.
+##current smoker,BPMeds,prevalentStroke,prevalentHyp,diabetes and TenYearCHD are  binary - nominal catogorical varaiable, Centeral tendency measure we use count,frequency,and mode.
+##totChol, sysBP, diaBP, BMI, heartrate and gulcose are numerical varaiable. Mean, median and standard deviation is used to measure central tendency.
+
+```{r}
+library(readr)
+## scatterplot 
+plot(fram.df$age ~ fram.df$totChol, xlab = "TotalCholestrol", ylab = "Age")
+```
+#Looking at the above scatterplot graph between age and totalcholestrol we see that there is no significant correlation between both. The increase or decrease of total cholestrol of an individual doesn't have any relationship with age. People under 40 can also have high cholestrol. ##We can also see outliers which shows that individuals in the age bracket of 40-60 can have extremly high cholestrol rate.
+##It shows that data is clutered and overlapping.Scatterplots represesnts best visualization of numerical varaiables that is why to show relationship between age and totalcholestrol I use this.
+```{r}
+# Stacked Bar Plot 
+counts <- table(fram.df$TenYearCHD, fram.df$age)
+barplot(counts, main="10-year Risk of coronary heart disease age wise distribution ",
+  xlab="age", col=c("pink","lightblue"),
+  legend = rownames(counts))
+#This a stacked bar plot that shows the frequency of how many people have risk of coronary heart disease in 10 years with respect of all age group in the dataset.
+```
+```{r}
+# Simple Bar Plot
+counts <- table(fram.df$diabetes)
+barplot(counts, main="	
+Diabetes Distribution",
+   xlab="Diabetes")
+#this is a simple bar chart that shows frquency of individual suffering from diabates in the dataset.
+```
+```{r}
+#Histogram 
+hist(fram.df$diaBP, xlab = "DiaBP")
+#The histogram shows the frequency of Diastolic Blood pressue. It shows that according to data set individuals have diaBP ranging between 70 to 90.
+
+```
+```{r}
+## color plot
+par(mfcol = c(1,1), xpd=TRUE) 
+plot(fram.df$age ~ fram.df$cigsPerDay, ylab = "Age", xlab = "Cigarrettes per day",
+     col = ifelse(fram.df$male == 1, "pink", "blue"))
+
+legend("topright", inset=c(0, -0.1), 
+       legend = c("Male = 1", "Female = 0"), col = c("pink", "blue"), 
+       pch = 1, cex = 1)
+#This scatterplot shows cigarrettes consumption per day based on gender belonging from different age group bracket. It shows that these three varaiables has strong positive relationship with eachother. The scatterplot also shows that datset have outliers. 
+```
+
+```{r}
+# Box Plot
+boxplot(fram.df$cigsPerDay ~ fram.df$BPMeds, xlab = "BPMeds", ylab = "CigsPerDay")
+#the box plot shows that there is a relationship between these two varaiables Cigrattes consumption per day and BPMeds. The individuals who are smokers and consumes cigrattes have high chances that they have BP issue and they are on medications.Individuals on BPmedications have cigratte consumption ranging from 0-10 per day.The circles outside the bar shows that this data has outliers.
+```
+
+```{r}
+#Q2 c 
+#Classification: Can we distinguish that people with high BMI are at risk of coronary heart disease or not?
+#Prediction: Based on an individual BMI, glucose level and total cholesterol rate, can we predict that an individual is at high risk of coronary heart disease?
+```
+
+```{r}
+#Q2 d 
+#MUID 11012371
+1+1+0+1+2+3+7+1
+fram.df[16, 1:17]
+#The observation 16 in the dataset is interpreted as:
+#A woman age 38 with an eduaction level of highschool or GER certification, is a smoker and her current cigratte consumption is 20 per day, she is not on BPmedications and has no prevelant heart stroke history but suffering from prevelance hypertension.Her glucose level is not high and she is not at the risk of being diabetic.Her systolic blood pressure is 140 which is higher than normal and diastolic blood pressure is 90 which is also high which is an indication of her being suffering from hypertension. Her BMI and total cholestrol rate is higher than the average. Because of hypertension and high consumption of cigratte with high heart rate she has high risk of heart coronry diseases in the next 10 years
+```
+
